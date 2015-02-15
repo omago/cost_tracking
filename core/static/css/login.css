@@ -1,0 +1,62 @@
+/* 
+    Document   : screen
+    Created on : 05.04.2013., 09:38:23
+    Author     : Domagoj Kovač
+*/
+
+
+/* RESET
+----------------------------------*/
+* { margin: 0; padding: 0; font-family: "Arial", serif; font-size: 12px; color: black; }
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+
+
+
+/* GENERAL
+----------------------------------*/
+a { text-decoration: none; }
+.clear { clear: both; }
+
+
+/* LAYOUT
+----------------------------------*/
+html,
+body { height: 100%; width: 100%; }
+
+
+/* LAYOUT
+----------------------------------*/
+body { background-image: url(../images/login/pattern.png) }
+#container { padding-top: 80px; }
+
+
+/* FORM
+----------------------------------*/
+#login-form { margin: 0 auto; background-color: rgb(255,255,255); width: 523px; padding: 40px; box-shadow: 0px 0px 20px rgba(0,0,0,0.65); -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.65); -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,0.65); -ms-filter:"progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=0,Color=#a6000000,Positive=true)"; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=0,Color=#a6000000,Positive=true); }
+#login-form #application-info { float: left; width: 170px; text-align: center; }
+#login-form #application-info img { width: 190px; }
+#login-form #application-info p { margin-top: 30px; font-size: 16px; line-height: 160%; color: rgb(116,116,132); }
+#login-form #application-info div { display: table-cell; height: 120px; vertical-align: middle; }
+#login-form form { float: right; width: 280px; padding-left: 30px; border-left: 1px dotted rgb(219,219,234); }
+
+#login-form form h1 { font-size: 24px; font-size: 24px; color: rgb(116,116,132); margin-bottom: 20px; padding-bottom: 18px; padding-left: 50px; border-bottom: 1px dotted rgb(219,219,234); background: url(../images/login/login-icon.png) no-repeat left 5px; line-height: 40px; }
+
+#password-input { margin-top: 10px; }
+
+#password-input label,
+#e-mail-input label { text-indent: -1000px; display: inline-block; width: 20px; background-repeat: no-repeat; background-position: 0px 0px; overflow: hidden; }
+
+#password-input input,
+#e-mail-input input { width: 204px; height: 14px; padding: 7px; border: 1px solid #ECECFB; }
+
+#password-input label { background-image: url(../images/login/password-icon.png); background-position: 0px 3px; }
+#e-mail-input label { background-image: url(../images/login/user-icon.png); }
+
+#login-form input[type=submit] { background: url(../images/login/login-button.png); padding-left: 20px; border: 0px; width: 180px; height: 36px; cursor: pointer; margin-left: 20px; margin-top: 20px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; line-height: 120%; color: rgb(100,100,114); text-align: center; text-shadow:1px 1px 0px rgb(255,255,255); -ms-filter:"progid:DXImageTransform.Microsoft.dropshadow(OffX=1,OffY=1,Color=#ffffffff,Positive=true)"; zoom: 1; filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=1,OffY=1,Color=#ffffffff,Positive=true); }
+#login-form input[type=submit]:hover { background-position: 0 -36px; }
+
+.error { background: url(../images/login/error-icon.png) no-repeat 0px 0px; padding-left: 24px; padding-bottom: 20px; line-height: 120%; color: rgb(116,116,132); }
+#copyright { color: rgb(100,100,114); text-align: right; width: 540px; margin: 10px auto 0; }
+#copyright a { color: rgb(100,100,114); font-weight: bold; }
+#copyright a:hover { color: rgb(100,100,114); font-weight: bold; border-bottom: 1px dotted rgb(100,100,114); }
+

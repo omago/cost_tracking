@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% load simple_tags %}
+
+{% block content %}
+
+<form method="post">{% csrf_token %}
+    {% h1 "Korisnici" %}
+    <div>
+        <a href="/user/" class="button back padding-right-0">Natrag</a>
+    </div>
+
+    <fieldset>
+
+        <div>
+            <label for="{{ form.username.auto_id }}">{{ form.username.label }}</label>
+            <div>{{ form.username }}</div>
+            {{ form.username.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.password.auto_id }}">{{ form.password.label }}</label>
+            <div>{{ form.password }}</div>
+            {{ form.password.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.email.auto_id }}">{{ form.email.label }}</label>
+            <div>{{ form.email }}</div>
+            {{ form.email.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label>
+            <div>{{ form.first_name }}</div>
+            {{ form.first_name.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label>
+            <div>{{ form.last_name }}</div>
+            {{ form.last_name.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.groups.auto_id }}">{{ form.groups.label }}</label>
+            <div>{{ form.groups }}</div>
+            {{ form.groups.errors }}
+        </div>
+
+        <div>
+            <label for="{{ form.is_active.auto_id }}">{{ form.is_active.label }}</label>
+            <div>{{ form.is_active }}</div>
+            {{ form.is_active.errors }}
+        </div>
+
+    </fieldset>
+
+    <input type="submit" class="button save" name="submit" value="Spremi">
+
+</form>
+{% endblock %}

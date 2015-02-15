@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% load simple_tags %}
+
+    <form class="view">
+        {% h1 page_title %}
+        <div>
+            <a href="/{{ url_main }}/" class="button back padding-right-0">Natrag</a>
+            <a href="/{{ url_main }}/form/{{ pk }}/" class="button edit float-right padding-right-0">Ažuriraj</a>
+        </div>
+
+        <fieldset>
+            {% for field in fields %}
+                <div>
+                    <label>{{ field.label }}</label>
+                    <div>{{ field.value }}</div>
+                </div>
+            {% endfor %}
+        </fieldset>
+
+    </form>
+
+    {% if releated_modules %}
+        {% for releated_modul in releated_modules %}
+            {{ releated_modul }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

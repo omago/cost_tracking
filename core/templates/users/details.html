@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load simple_tags %}
+
+<form class="view">
+    {% h1 "Korisnici" %}
+    <div style="width: 70%">
+        <a href="/user/" class="button back padding-right-0">Natrag</a>
+        <a href="/user/form/{{ row.pk }}/" class="button edit float-right padding-right-0">Ažuriraj</a>
+    </div>
+    <fieldset style="position: relative">
+
+        <div>
+            <label>Korisničko ime</label>
+            <div>{{ row.username }}</div>
+        </div>
+
+        <div>
+            <label>Ime</label>
+            <div>{{ row.first_name }}</div>
+        </div>
+
+        <div>
+            <label>Prezime</label>
+            <div>{{ row.last_name }}</div>
+        </div>
+
+        <div>
+            <label>E-mail</label>
+            <div>{{ row.email }}</div>
+        </div>
+
+        <div>
+            <label>Aktivan</label>
+            <div>{{ row.is_active }}</div>
+        </div>
+
+        <div>
+            <label>Datum registracije</label>
+            <div>{{ row.date_joined }}</div>
+        </div>
+
+        <div>
+            <label>Zadnja prijava</label>
+            <div>{{ row.last_login }}</div>
+        </div>
+
+    </fieldset>
+
+</form>
+{% endblock %}

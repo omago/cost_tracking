@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% load simple_tags %}
+{% load filters %}
+
+{% block content %}
+
+    {% h1 "Troškovi - Izvještaj" %}
+
+    <form method="get" class="margin-bottom-20 padding-bottom-20">{% csrf_token %}
+
+        <fieldset>
+
+            {% for field in search_form %}
+                <div>
+                    <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                    <div>{{ field }}</div>
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+
+        </fieldset>
+
+        <input type="submit" class="button search" name="submit" value="Pretraga">
+
+    </form>
+
+    {% if report_requested %}
+        {% if rows %}
+            <table style="width: 400px" class="grid report total">
+                <tbody>
+                    <tr>
+                        <th class="left padding-10">Sveukupna potrošnja</th>
+                        <td>{{sum}} kn</td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+        <table class="grid">
+            {% if rows %}
+                <tr>
+                    {% th "Id" "pk" "3" %}
+                    {% th "Naziv troška" "cost_name.name" "17" "left" %}
+                    {% th "Kategorija troška" "cost_category.name" "15" "left" %}
+                    {% th "Podkategorija troška" "cost_subcategory.name" "15" "left" %}
+                    {% th "Iznos" "amount" "5" "left" %}
+                    {% th "Količina" "quantity" "5" "left" %}
+                    {% th "Datum troška" "date_of_cost" "10" "left" %}
+                    {% th "Platio" "paid_by" "10" "left" %}
+                    {% th "Unio" "created_by" "10" "left" %}
+                    {% th_operation %}
+                </tr>
+                {% for row in rows %}
+                    <tr>
+                        {% td row.pk "pk" %}
+                        {% with link=row.pk|format:"<a href='/cost/details/%s/'>"|add:row.cost_name.name|add:"</a>" %}
+                            {% td link "cost_name.name" "left" %}
+                        {% endwith %}
+                        {% td row.cost_category.name "cost_category.name" "left" %}
+                        {% td row.cost_subcategory.name "cost_subcategory.name" "left" %}
+                        {% td row.amount "amount" "left" %}
+                        {% td row.quantity "quantity" "left" %}
+                        {% td row.date_of_cost "date_of_cost" "left" %}
+                        {% td row.paid_by "paid_by" "left" %}
+                        {% td row.created_by "created_by" "left" %}
+                        {% with view=row.pk|format:"<a href='/cost/details/%s/' class='view'></a>" %}
+                            {% td view %}
+                        {% endwith %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    {% td "Nema zapisa" %}
+                </tr>
+            {% endif %}
+        </table>
+    {% endif %}
+
+{% endblock %}

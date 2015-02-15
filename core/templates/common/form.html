@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% load simple_tags %}
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+    {% h1 page_title %}
+    <div>
+        <a href="/{{ url_main }}/" class="button back padding-right-0">Natrag</a>
+    </div>
+
+    <fieldset>
+
+        {% for field in form %}
+            <div>
+                <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                <div>{{ field }}</div>
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+    </fieldset>
+
+    <input type="submit" class="button save" name="submit" value="Spremi">
+
+</form>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% load simple_tags %}
+{% load filters %}
+
+{% block content %}
+
+    {% h1 page_title %}
+
+    {% button_new "Novo primanje" "/receiving/form/" %}
+
+
+    <table class="grid">
+        {% if rows %}
+            <tr>
+                {% th "Id" "pk" "3" %}
+                {% th "Kategorija primanja" "receiving_category.name" "17" "left" %}
+                {% th "Iznos" "amount" "15" "left" %}
+                {% th "Datum primanja" "date_of_receiving" "15" "left" %}
+                {% th "Primaoc" "received_by" "20" "left" %}
+                {% th "Opis" "description" "20" "left" %}
+                {% th_operation %}
+            </tr>
+            {% for row in rows %}
+                <tr>
+                    {% td row.pk "pk" %}
+                    {% with link=row.pk|format:"<a href='/receiving/details/%s/'>"|add:row.receiving_category.name|add:"</a>" %}
+                        {% td link "receiving_category.name" "left" %}
+                    {% endwith %}
+                    {% td row.amount "amount" "left" %}
+                    {% td row.date_of_receiving "date_of_receiving" "left" %}
+                    {% td row.received_by "received_by" "left" %}
+                    {% td row.description "description" "left" %}
+                    {% with view=row.pk|format:"<a href='/receiving/details/%s/' class='view'></a>" %}
+                    {% with edit=row.pk|format:"<a href='/receiving/form/%s/' class='edit'></a>" %}
+                    {% with delete=row.pk|format:"<a href='/receiving/delete/%s/' class='delete'></a>" %}
+                        {% td view|add:edit|add:delete %}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                {% td "Nema zapisa" %}
+            </tr>
+        {% endif %}
+    </table>
+    {% pager rows %}
+
+{% endblock %}

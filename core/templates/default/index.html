@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% load simple_tags %}
+{% load filters %}
+
+
+{% block content %}
+    <h1>Pregled za mjesec {{current_month}}/{{current_year}} na dan {{current_day}}.{{current_month}}.{{current_year}}</h1>
+
+    <h2>Sveukupno</h2>
+
+    <table style="width: 400px" class="grid report total">
+        <tbody>
+            <tr>
+                <th class="left padding-10">Sveukupni prihodi</th>
+                <td class="left">{{total_receivings}} kn</td>
+            </tr>
+            <tr>
+                <th class="left padding-10">Sveukupna potrošnja</th>
+                <td class="left">{{total_spendings}} kn ({{total_spendings_percentage|floatformat:2}}%)</td>
+            </tr>
+            <tr>
+                <th class="left padding-10">Razlika</th>
+                <td class="left">{{left_to_spent}} kn ({{left_to_spent_percentage|floatformat:2}}%)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Potrošnja po kategorijama</h2>
+
+    <table class="grid">
+        {% if spendings_by_categories %}
+            <tr>
+                {% th "Kategorija" None "25" "left" %}
+                {% th "Potrošnja" None "25" "left" %}
+                {% th "Budget" None "25" "left" %}
+                {% th "Razlika" None "25" "left" %}
+            </tr>
+            {% for spending_by_category in spendings_by_categories %}
+                <tr>
+                    {% with category_link=spending_by_category|dict_value:"category_link" %}
+                        {% td category_link None "left" %}
+                    {% endwith %}
+                    <td class="left">{% if spending_by_category|dict_value:"sum" %} {{spending_by_category|dict_value:"sum"}} kn ({{spending_by_category|dict_value:"sum_percentage"|floatformat:2}}%) {% endif%}</td>
+                    <td class="left">{% if spending_by_category|dict_value:"monthly_budget" %} {{spending_by_category|dict_value:"monthly_budget"}} kn {% endif%}</td>
+                    <td class="left">{% if spending_by_category|dict_value:"left_to_spent" %} {{spending_by_category|dict_value:"left_to_spent"}} kn {% endif%}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                {% td "Nema zapisa" %}
+            </tr>
+        {% endif %}
+    </table>
+
+    <h2>Statistika po korisnicima</h2>
+
+    <table class="grid">
+        {% if spendings_by_users %}
+            <tr>
+                {% th "Korisnik" None "25" "left" %}
+                {% th "Prihodi" None "25" "left" %}
+                {% th "Potrošnja" None "25" "left" %}
+                {% th "Razlika" None "25" "left" %}
+            </tr>
+            {% for spending_by_user in spendings_by_users %}
+                <tr>
+                    {% with user_link=spending_by_user|dict_value:"user_link" %}
+                        {% td user_link None "left" %}
+                    {% endwith %}
+                    <td class="left">{{spending_by_user|dict_value:"receiving_sum"}} kn</td>
+                    <td class="left">{{spending_by_user|dict_value:"spending_sum"}} kn ({{spending_by_user|dict_value:"spending_sum_percentage"|floatformat:2}}%)</td>
+                    <td class="left">{{spending_by_user|dict_value:"left_to_spent"}} kn ({{spending_by_user|dict_value:"left_to_spent_percentage"|floatformat:2}}%)</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                {% td "Nema zapisa" %}
+            </tr>
+        {% endif %}
+
+    </table>
+
+{% endblock %}

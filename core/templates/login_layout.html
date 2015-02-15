@@ -1,0 +1,23 @@
+{% load simple_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Prijava - {% application_name %}</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="/static/css/login.css" />
+    </head>
+    <body>
+        <div id="container">
+            <div id="login-form">
+                <div id="application-info">
+                    <img src="/static/images/logo.png" />
+                    <p>Dobro došli u <br />{% filter upper %}{% application_name %}{% endfilter %}!</p>
+                </div>
+                {% block content %}
+                {% endblock %}
+                <div class="clear"></div>
+            </div>
+            <div id="copyright">{% application_name %} {% application_version %}</div>
+        </div>
+    </body>
+</html>

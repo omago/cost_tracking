@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% load simple_tags %}
+{% load filters %}
+
+{% block content %}
+
+    {% h1 "Korisnici" %}
+    {% button_new "Novi korisnik" "/user/form/" %}
+
+    <div class="grid-10">
+        <table class="grid">
+            {% if rows %}
+                <tr>
+                    {% th "Id" "pk" "3" %}
+                    {% th "Korisničko ime" "username" "15" "left" %}
+                    {% th "Ime" "first_name" "20" "left" %}
+                    {% th "Prezime" "last_name" "20" "left" %}
+                    {% th "E-mail" "email" "25" "left" %}
+                    {% th "Aktivan" "is_active" "10" "left" %}
+                    {% th "Operacije" None "10" %}
+                </tr>
+                {% for row in rows %}
+                    <tr>
+                        {% td row.pk "pk" %}
+                        {% with link=row.pk|format:"<a href='/user/details/%s/'>"|add:row.username|add:"</a>" %}
+                            {% td link "LIID" "left" %}
+                        {% endwith %}
+                        {% td row.first_name "first_name" "left" %}
+                        {% td row.last_name "last_name" "left" %}
+                        {% td row.email "email" "left" %}
+                        {% td row.is_active "is_active" "left" %}
+                        {% with view=row.pk|format:"<a href='/user/details/%s/' class='view'></a>" %}
+                        {% with edit=row.pk|format:"<a href='/user/form/%s/' class='edit'></a>" %}
+                        {% with delete=row.pk|format:"<a href='/user/delete/%s/' class='delete'></a>" %}
+                            {% td view|add:edit|add:delete %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    {% td "Nema zapisa" %}
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+    {% pager rows %}
+
+{% endblock %}
