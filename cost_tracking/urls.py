@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'core/static/'}),
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^/*', include("receipt.urls")),
     url(r'^/*', include("receiving_category.urls")),
     url(r'^/*', include("receiving.urls")),
     url(r'^/*', include("cost_category.urls")),

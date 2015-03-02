@@ -8,6 +8,7 @@ from cost_category.models import CostCategory
 from cost_subcategory.models import CostSubcategory
 from cost_name.models import CostName
 from seller.models import Seller
+from receipt.models import Receipt
 
 
 class Cost(models.Model):
@@ -21,6 +22,7 @@ class Cost(models.Model):
     seller = models.ForeignKey(Seller, verbose_name="Prodavatelj", blank=True, null=True)
     attachment = models.FileField(verbose_name="Prilog", blank=True, upload_to="uploads")
     description = models.TextField(verbose_name="Opis", blank=True)
+    receipt = models.ForeignKey(Receipt, blank=True, null=True, verbose_name="Račun")
 
     created_by = models.ForeignKey(User, related_name="cost_created_by", verbose_name="Unio")
     creation_datetime = models.DateTimeField(verbose_name="Vrijeme unosa")

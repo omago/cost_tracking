@@ -81,8 +81,11 @@ def td(context, label, name=None, css_class=None):
 register.simple_tag(takes_context=True)(td)
 
 
-def button_new(label, link):
-    return "<a class='button new' href='" + link + "'>" + label + "</a>"
+def button_new(label, link, css_class=None):
+    button_css_class = "button new"
+    if css_class:
+        button_css_class += " " + css_class
+    return "<a class='" + button_css_class + "' href='" + link + "'>" + label + "</a>"
 register.simple_tag(button_new)
 
 

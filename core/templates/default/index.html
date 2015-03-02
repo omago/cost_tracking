@@ -25,6 +25,27 @@
         </tbody>
     </table>
 
+    <h2>Potrošnja po danima</h2>
+
+    <table class="grid">
+        {% if spendings_by_days %}
+            <tr>
+                {% th "Dan" None "25" "left" %}
+                {% th "Potrošnja" None "25" "left" %}
+            </tr>
+            {% for spending_by_day in spendings_by_days %}
+                <tr>
+                    <td class="left">{{spending_by_day|dict_value:"day"}}</td>
+                    <td class="left">{{spending_by_day|dict_value:"sum"}} kn</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                {% td "Nema zapisa" %}
+            </tr>
+        {% endif %}
+    </table>
+
     <h2>Potrošnja po kategorijama</h2>
 
     <table class="grid">

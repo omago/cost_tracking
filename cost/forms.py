@@ -5,10 +5,12 @@ from django.forms import ModelForm, Form
 from django.utils import timezone
 from django import forms
 from django.contrib.auth.models import User
+from django.forms.models import BaseModelFormSet
 
 from cost_category.models import CostCategory
 from cost_subcategory.models import CostSubcategory
 from cost_name.models import CostName
+from cost.models import Cost
 from .models import Cost as Model
 
 
@@ -58,7 +60,10 @@ class CostForm(ModelForm):
 
         cost_name_autocomplete = self.cleaned_data["cost_name_autocomplete"]
         try:
-            cost_name = CostName.objects.get(name=cost_name_autocomplete)
+            cost_name = CostName.objects.filter(cost_category=cost.cost_category)
+            if cost.cost_subcategory:
+                cost_name = cost_name.filter(cost_subcategory=cost.cost_subcategory)
+            cost_name = cost_name.get(name=cost_name_autocomplete)
         except CostName.DoesNotExist:
             cost_name = CostName()
             cost_name.cost_category = cost.cost_category
@@ -76,6 +81,90 @@ class CostForm(ModelForm):
             cost.save()
 
         return cost
+
+
+class BaseCostFormSet(BaseModelFormSet):
+    def __init__(self, *args, **kwargs):
+        super(BaseCostFormSet, self).__init__(*args, **kwargs)
+
+
+class CostFormsetForm(ModelForm):
+    cost_name_autocomplete = forms.CharField(max_length=1024, required=False, label="Naziv troška")
+
+    def __init__(self, *args, **kwargs):
+        super(CostFormsetForm, self).__init__(*args, **kwargs)
+
+        self.fields["cost_category"].widget.attrs["class"] = "cost_category_select"
+        self.fields["cost_subcategory"].widget.attrs["class"] = "cost_subcategory_select"
+        self.fields["amount"].widget.attrs["placeholder"] = "Iznos"
+        self.fields["quantity"].widget.attrs["placeholder"] = "Količina"
+        self.fields['quantity'].required = False
+        self.fields["description"].widget = forms.TextInput()
+        self.fields["description"].widget.attrs["placeholder"] = "Opis"
+        self.fields["cost_name"].widget = forms.HiddenInput()
+        self.fields["cost_name_autocomplete"].widget.attrs["placeholder"] = "Naziv proizvoda"
+        self.fields["cost_name_autocomplete"].widget.attrs["class"] = "autocomplete"
+        self.fields["cost_name_autocomplete"].widget.attrs["rel"] = "/cost-name/autocomplete/"
+
+        prefix = kwargs["prefix"]
+
+        if "data" in kwargs and prefix + "-cost_category" in kwargs["data"]:
+            cost_category_id = kwargs["data"][prefix + "-cost_category"]
+            if len(cost_category_id) > 0:
+                self.fields['cost_subcategory'].queryset = CostSubcategory.objects\
+                    .filter(cost_category_id=int(cost_category_id))
+        elif "instance" in kwargs:
+            cost_category = kwargs["instance"].cost_category
+            self.fields['cost_subcategory'].queryset = CostSubcategory.objects.filter(cost_category=cost_category)
+            self.fields["cost_name_autocomplete"].initial = kwargs["instance"].cost_name
+        else:
+            self.fields['cost_subcategory'].queryset = CostSubcategory.objects.none()
+
+    class Meta:
+        model = Model
+        fields = ("cost_category",
+                  "cost_subcategory",
+                  "cost_name",
+                  "cost_name_autocomplete",
+                  "amount",
+                  "quantity",
+                  "description")
+
+    def save(self, commit=True, created_by=None, receipt=None, *args, **kwargs):
+        cost = super(CostFormsetForm, self).save(commit=False)
+
+        if "cost_name_autocomplete" in self.cleaned_data:
+            cost_name_autocomplete = self.cleaned_data["cost_name_autocomplete"]
+            try:
+                cost_name = CostName.objects.filter(cost_category=cost.cost_category)
+                if cost.cost_subcategory:
+                    cost_name = cost_name.filter(cost_subcategory=cost.cost_subcategory)
+                cost_name = cost_name.get(name=cost_name_autocomplete)
+            except CostName.DoesNotExist:
+                cost_name = CostName()
+                cost_name.cost_category = cost.cost_category
+                cost_name.cost_subcategory = cost.cost_subcategory
+                cost_name.name = cost_name_autocomplete
+                cost_name.save()
+
+            if not cost.quantity:
+                cost.quantity = 1
+
+            cost.cost_name = cost_name
+            cost.receipt = receipt
+            cost.paid_by = receipt.paid_by
+            cost.date_of_cost = receipt.date_of_receipt
+            cost.seller = receipt.seller
+
+            if not cost.pk:
+                cost.created_by = created_by
+                cost.creation_datetime = timezone.now()
+
+            if commit:
+                cost.save()
+
+        return cost
+
 
 
 class CostSearchForm(Form):

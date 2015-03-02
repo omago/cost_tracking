@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'cost_name',
     'seller',
     'cost',
+    'receipt',
     'receiving',
 )
 
