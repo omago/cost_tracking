@@ -64,7 +64,11 @@ def form(request, pk=None):
 
 @login_required
 def details(request, pk):
-    return get_details(request, model, model_form, pk, context, "common/details.html")
+    context["pk"] = pk
+    context["fields"] = model_form(instance=Model.objects.get(pk=pk))
+    context["receipt_costs"] = Cost.objects.filter(receipt_id=pk)
+
+    return render_to_response("receipt/details.html", context, context_instance=RequestContext(request))
 
 @login_required
 def delete(request, pk):
