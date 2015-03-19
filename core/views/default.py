@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
+from calendar import monthrange
 
 from django.utils import timezone
 from django.shortcuts import render_to_response
@@ -33,7 +34,7 @@ def index(request):
 
     spendings_by_days = []
 
-    for x in range(1, current_day+1):
+    for x in range(1, monthrange(current_year, current_month)[1] + 1):
         day_sum = Cost.objects\
             .filter(date_of_cost__day=x)\
             .filter(date_of_cost__month=current_month)\
@@ -46,7 +47,8 @@ def index(request):
             sum = 0
 
         spendings_by_days.append({
-            "day": date(day=x, month=current_month, year=current_year),
+            "date_url": "/cost/report?month=" + str(current_month) + "&day=" + str(x),
+            "date": date(day=x, month=current_month, year=current_year),
             "sum": sum
         })
 
@@ -121,6 +123,8 @@ def index(request):
     context["current_year"] = current_year
     context["total_receivings"] = total_receivings
     context["total_receivings_percentage"] = total_receivings_percentage
+    context["avarage_spendings_per_day"] = total_spendings/current_day
+    context["avarage_spendings_per_day_percentage"] = context["avarage_spendings_per_day"]/context["total_receivings_percentage"]
     context["total_spendings"] = total_spendings
     context["total_spendings_percentage"] = total_spendings/context["total_receivings_percentage"] if context["total_receivings_percentage"] > 0 else 0
     context["left_to_spent"] = total_receivings - total_spendings

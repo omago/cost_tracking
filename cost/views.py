@@ -41,6 +41,7 @@ def report(request):
     order_type = request.GET.get("order_type", None)
 
     month = request.GET.get("month", None)
+    day = request.GET.get("day", None)
     amount_from = request.GET.get("amount_from", None)
     amount_to = request.GET.get("amount_to", None)
     paid_by = request.GET.get("paid_by", None)
@@ -51,6 +52,9 @@ def report(request):
 
     if month:
         rows_list = rows_list.filter(date_of_cost__month=month)
+
+    if day:
+        rows_list = rows_list.filter(date_of_cost__day=day)
 
     if amount_from:
         rows_list = rows_list.filter(amount__gte=amount_from)

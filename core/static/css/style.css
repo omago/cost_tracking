@@ -317,7 +317,7 @@ input.button { height: 38px; width: auto; }
 
 /* overrides */
 .form .grid { margin-top: 0px; margin-bottom: 20px; }
-.grid.total th { padding-left: 10px; }
+.grid.total th { padding-left: 10px; width: 40%; }
 #related-entities .grid { margin-bottom: 40px; }
 
 /* icons */

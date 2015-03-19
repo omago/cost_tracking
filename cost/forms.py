@@ -185,6 +185,14 @@ class CostSearchForm(Form):
         ("12", "Prosinac")
     ), label="Mjesec", required=False)
 
+
+    choices = [("", "--------")]
+
+    for i in range(1, 32):
+        choices.append((str(i), str(i)))
+
+    day = forms.ChoiceField(choices=choices, label="Dan", required=False)
+
     amount_from = forms.DecimalField(label="Iznos od", required=False)
     amount_to = forms.DecimalField(label="Iznos do", required=False)
 
