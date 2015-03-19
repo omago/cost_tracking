@@ -7,8 +7,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.forms.models import modelformset_factory
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Sum
 
-from core.helpers.view import get_list, get_details, get_delete
+from cost_tracking.settings.base import RESULTS_PER_PAGE
+
+from core.helpers.view import get_delete
 
 from .settings import context
 from .models import Receipt as Model
@@ -23,7 +27,34 @@ model_form = ModelForm
 
 @login_required
 def list(request):
-    return get_list(request, model, context, context["template_path"] + "/list.html", hide_deleted=True)
+
+    order_by = request.GET.get("order_by")
+    order_type = request.GET.get("order_type")
+    rows_list = Model.objects.all()
+    rows_list = rows_list.filter(deleted=None).annotate(total_sum=Sum('cost__amount'))
+
+
+    if order_by:
+        if order_type == "asc":
+            order = order_by
+        else:
+            order = "-" + order_by
+        rows_list = rows_list.order_by(order)
+
+    paginator = Paginator(rows_list, RESULTS_PER_PAGE)
+    page = request.GET.get('page')
+
+    try:
+        rows = paginator.page(page)
+    except PageNotAnInteger:
+        rows = paginator.page(1)
+    except EmptyPage:
+        rows = paginator.page(paginator.num_pages)
+
+    context["rows"] = rows
+
+    return render_to_response(context["template_path"] + "/list.html", context, context_instance=RequestContext(request))
+
 
 @login_required
 def form(request, pk=None):

@@ -22,7 +22,7 @@ $(document).ready(function() {
         });
     });
 
-    $(".autocomplete").each(function() {
+    $("#id_form-0-cost_name_autocomplete.autocomplete").each(function() {
         var autocomplete_object = $(this);
         var url = autocomplete_object.attr("rel");
 
@@ -35,6 +35,35 @@ $(document).ready(function() {
                         "cost_name": request.term,
                         "cost_category": autocomplete_object.parent().prev().prev().prev().find($(".cost_category_select")).val(),
                         "cost_subcategory": autocomplete_object.parent().prev().prev().find($(".cost_subcategory_select")).val()
+                    },
+                    success: function(data) {
+                        var response_json = [];
+                        $.each(data, function (index, value) {
+                            response_json.push({"value": value.fields.name, "id": value.pk})
+                        });
+                        response(response_json);
+                    }
+                });
+            },
+            minLength: 2,
+            select: function(event,ui) {
+                var id_field = $(this).attr("id").replace("_autocomplete", "")
+                $("input[id=" + id_field + "]").val(ui.item.id);
+            }
+        });
+    });
+
+    $("#id_seller_autocomplete.autocomplete").each(function() {
+        var autocomplete_object = $(this);
+        var url = autocomplete_object.attr("rel");
+
+        $(this).autocomplete({
+            source: function( request, response ) {
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    data: {
+                        "seller_name": request.term
                     },
                     success: function(data) {
                         var response_json = [];

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
+from django.http import HttpResponse
 
 from core.helpers.view import get_list, get_details, get_form, get_delete
 from .settings import context
@@ -9,6 +11,18 @@ from .forms import SellerForm as ModelForm
 
 model = Model
 model_form = ModelForm
+
+@login_required
+def autocomplete(request):
+    if request.is_ajax():
+        seller_name = request.GET.get("seller_name")
+        cost_names = Model.objects.filter(name__istartswith=seller_name)
+        data = serializers.serialize("json", cost_names)
+
+        return HttpResponse(data, content_type='application/json')
+
+    return HttpResponse("")
+
 
 @login_required
 def list(request):

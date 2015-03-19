@@ -12,11 +12,12 @@
         {% if rows %}
             <tr>
                 {% th "Id" "pk" "3" %}
-                {% th "Račun" "pk" "17" "left" %}
-                {% th "Prodavatelj" "seller.name" "17" "left" %}
-                {% th "Datum računa" "date_of_cost" "17" "left" %}
-                {% th "Platio" "paid_by" "17" "left" %}
-                {% th "Unio" "created_by" "17" "left" %}
+                {% th "Račun" "pk" "14" "left" %}
+                {% th "Prodavatelj" "seller.name" "14" "left" %}
+                {% th "Suma" "total_sum" "14" "left" %}
+                {% th "Datum računa" "date_of_cost" "14" "left" %}
+                {% th "Platio" "paid_by" "14" "left" %}
+                {% th "Unio" "created_by" "14" "left" %}
                 {% th_operation %}
             </tr>
             {% for row in rows %}
@@ -28,6 +29,9 @@
                     {% endwith %}
                     {% endwith %}
                     {% td row.seller.name "seller.name" "left" %}
+                    {% with total_sum=row.total_sum|convert_to_string:"0" %}
+                        {% td total_sum|add:" kn" "total_sum" "left" %}
+                    {% endwith %}
                     {% td row.date_of_receipt "date_of_cost" "left" %}
                     {% td row.paid_by "paid_by" "left" %}
                     {% td row.created_by "created_by" "left" %}
