@@ -46,8 +46,15 @@ def index(request):
         else:
             sum = 0
 
+        if sum > 0:
+            height = 1 + int(sum/12)
+        else:
+            height = 1
+
         spendings_by_days.append({
             "date_url": "/cost/report?month=" + str(current_month) + "&day=" + str(x),
+            "height": height,
+            "day": x,
             "date": date(day=x, month=current_month, year=current_year),
             "sum": sum
         })

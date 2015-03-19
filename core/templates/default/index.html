@@ -66,28 +66,41 @@
 
     <div class="clear"></div>
 
-
     <div class="grid-50 padding-right-20">
+
         <h2>Potrošnja po danima</h2>
 
-        <table class="grid">
-            {% if spendings_by_days %}
-                <tr>
-                    {% th "Dan" None "25" "left" %}
-                    {% th "Potrošnja" None "25" "left" %}
-                </tr>
-                {% for spending_by_day in spendings_by_days %}
+        <div class="graph">
+            {% for spending_by_day in spendings_by_days %}
+                <div class="bar" style="height: {{spending_by_day|dict_value:'height'}}px">
+                    <div class="line"></div>
+                    <div class="sum">{{spending_by_day|dict_value:"sum"}} kn</div>
+                    <div class="day"><a href="{{spending_by_day|dict_value:"date_url"}}">{{spending_by_day|dict_value:"day"}}</a></div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div style="margin-top: 60px">
+
+            <table class="grid">
+                {% if spendings_by_days %}
                     <tr>
-                        <td class="left"><a href="{{spending_by_day|dict_value:"date_url"}}">{{spending_by_day|dict_value:"date"}}</a></td>
-                        <td class="left">{{spending_by_day|dict_value:"sum"}} kn</td>
+                        {% th "Dan" None "25" "left" %}
+                        {% th "Potrošnja" None "25" "left" %}
                     </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                    {% td "Nema zapisa" %}
-                </tr>
-            {% endif %}
-        </table>
+                    {% for spending_by_day in spendings_by_days %}
+                        <tr>
+                            <td class="left"><a href="{{spending_by_day|dict_value:"date_url"}}">{{spending_by_day|dict_value:"date"}}</a></td>
+                            <td class="left">{{spending_by_day|dict_value:"sum"}} kn</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        {% td "Nema zapisa" %}
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
     </div>
 
     <div class="grid-50 padding-left-20">

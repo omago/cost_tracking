@@ -166,7 +166,6 @@ class CostFormsetForm(ModelForm):
         return cost
 
 
-
 class CostSearchForm(Form):
 
     month = forms.ChoiceField(choices=(
@@ -184,7 +183,6 @@ class CostSearchForm(Form):
         ("11", "Studeni"),
         ("12", "Prosinac")
     ), label="Mjesec", required=False)
-
 
     choices = [("", "--------")]
 
