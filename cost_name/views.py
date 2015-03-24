@@ -20,7 +20,7 @@ def autocomplete(request):
         cost_category = request.GET.get("cost_category")
         cost_subcategory = request.GET.get("cost_subcategory")
 
-        cost_names = Model.objects.filter(name__istartswith=cost_name)
+        cost_names = Model.objects.filter(name__istartswith=cost_name).exclude(deleted=True)
 
         if cost_category:
             cost_names = cost_names.filter(cost_category_id=cost_category)
@@ -37,7 +37,7 @@ def autocomplete(request):
 
 @login_required
 def list(request):
-    return get_list(request, model, context, context["template_path"] + "/list.html")
+    return get_list(request, model, context, context["template_path"] + "/list.html", hide_deleted=True)
 
 
 @login_required
@@ -51,4 +51,4 @@ def details(request, pk):
 
 @login_required
 def delete(request, pk):
-    return get_delete(request, model, pk, "/cost-subcategory/")
+    return get_delete(request, model, pk, "/cost-name/")
