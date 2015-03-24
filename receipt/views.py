@@ -80,7 +80,7 @@ def form(request, pk=None):
     else:
         if pk:
             form = ModelForm(instance=Model.objects.get(pk=pk))
-            receipt_costs = Cost.objects.filter(receipt_id=pk)
+            receipt_costs = Cost.objects.filter(receipt_id=pk).order_by("pk")
             cost_formset = CostFormset(queryset=receipt_costs)
             cost_formset.extra = number_of_fields - len(receipt_costs)
         else:
@@ -97,7 +97,7 @@ def form(request, pk=None):
 def details(request, pk):
     context["pk"] = pk
     context["fields"] = model_form(instance=Model.objects.get(pk=pk))
-    context["receipt_costs"] = Cost.objects.filter(receipt_id=pk)
+    context["receipt_costs"] = Cost.objects.filter(receipt_id=pk).order_by("pk")
 
     return render_to_response("receipt/details.html", context, context_instance=RequestContext(request))
 
