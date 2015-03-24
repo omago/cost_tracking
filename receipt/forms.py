@@ -19,7 +19,7 @@ class ReceiptForm(forms.ModelForm):
         self.fields['paid_by'].label_from_instance = lambda obj: "%s %s (%s)" % (obj.first_name, obj.last_name, obj.username)
         self.fields["seller"].widget = forms.HiddenInput()
         self.fields["seller_autocomplete"].widget.attrs["autocomplete"] = "off"
-        self.fields["seller_autocomplete"].widget.attrs["class"] = "autocomplete"
+        self.fields["seller_autocomplete"].widget.attrs["class"] = "autocomplete seller"
         self.fields["seller_autocomplete"].widget.attrs["rel"] = "/seller/autocomplete/"
 
         if "instance" in kwargs:

@@ -53,7 +53,7 @@ $(document).ready(function() {
         });
     });
 
-    $("#id_seller_autocomplete.autocomplete").each(function() {
+    $(".autocomplete.seller").each(function() {
         var autocomplete_object = $(this);
         var url = autocomplete_object.attr("rel");
 
