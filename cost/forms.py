@@ -10,7 +10,6 @@ from django.forms.models import BaseModelFormSet
 from cost_category.models import CostCategory
 from cost_subcategory.models import CostSubcategory
 from cost_name.models import CostName
-from cost.models import Cost
 from .models import Cost as Model
 
 
@@ -34,6 +33,7 @@ class CostForm(ModelForm):
             self.fields['cost_subcategory'].queryset = CostSubcategory.objects.none()
 
         self.fields["cost_name"].widget = forms.HiddenInput()
+        self.fields["cost_name_autocomplete"].widget.attrs["autocomplete"] = "off"
         self.fields["cost_name_autocomplete"].widget.attrs["class"] = "autocomplete"
         self.fields["cost_name_autocomplete"].widget.attrs["rel"] = "/cost-name/autocomplete/"
 
@@ -102,8 +102,9 @@ class CostFormsetForm(ModelForm):
         self.fields["description"].widget = forms.TextInput()
         self.fields["description"].widget.attrs["placeholder"] = "Opis"
         self.fields["cost_name"].widget = forms.HiddenInput()
+        self.fields["cost_name_autocomplete"].widget.attrs["autocomplete"] = "off"
         self.fields["cost_name_autocomplete"].widget.attrs["placeholder"] = "Naziv proizvoda"
-        self.fields["cost_name_autocomplete"].widget.attrs["class"] = "autocomplete"
+        self.fields["cost_name_autocomplete"].widget.attrs["class"] = "autocomplete cost-name"
         self.fields["cost_name_autocomplete"].widget.attrs["rel"] = "/cost-name/autocomplete/"
 
         prefix = kwargs["prefix"]

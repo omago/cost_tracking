@@ -7,6 +7,7 @@ from django.utils import timezone
 from .models import Receipt as Model
 from seller.models import Seller
 
+
 class ReceiptForm(forms.ModelForm):
     seller_autocomplete = forms.CharField(max_length=1024, required=False, label="Prodavatelj")
 
@@ -17,6 +18,7 @@ class ReceiptForm(forms.ModelForm):
         self.fields["date_of_receipt"].widget.attrs.update({'class': 'date'})
         self.fields['paid_by'].label_from_instance = lambda obj: "%s %s (%s)" % (obj.first_name, obj.last_name, obj.username)
         self.fields["seller"].widget = forms.HiddenInput()
+        self.fields["seller_autocomplete"].widget.attrs["autocomplete"] = "off"
         self.fields["seller_autocomplete"].widget.attrs["class"] = "autocomplete"
         self.fields["seller_autocomplete"].widget.attrs["rel"] = "/seller/autocomplete/"
 

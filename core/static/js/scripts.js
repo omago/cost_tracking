@@ -22,7 +22,7 @@ $(document).ready(function() {
         });
     });
 
-    $("#id_form-0-cost_name_autocomplete.autocomplete").each(function() {
+    $(".autocomplete.cost-name").each(function() {
         var autocomplete_object = $(this);
         var url = autocomplete_object.attr("rel");
 
