@@ -11,3 +11,4 @@ class SellerForm(forms.ModelForm):
 
     class Meta:
         model = Model
+        exclude = ("deleted", "deleted_by", "deleted_datetime")
