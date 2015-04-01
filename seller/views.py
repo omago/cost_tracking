@@ -26,7 +26,7 @@ def autocomplete(request):
 
 @login_required
 def list(request):
-    return get_list(request, model, context, context["template_path"] + "/list.html")
+    return get_list(request, model, context, context["template_path"] + "/list.html", hide_deleted=True)
 
 
 @login_required
