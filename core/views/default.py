@@ -131,7 +131,7 @@ def index(request):
     context["total_receivings"] = total_receivings
     context["total_receivings_percentage"] = total_receivings_percentage
     context["avarage_spendings_per_day"] = total_spendings/current_day
-    context["avarage_spendings_per_day_percentage"] = context["avarage_spendings_per_day"]/context["total_receivings_percentage"]
+    context["avarage_spendings_per_day_percentage"] = context["avarage_spendings_per_day"]/context["total_receivings_percentage"] if context["total_receivings_percentage"] > 0 else 0
     context["total_spendings"] = total_spendings
     context["total_spendings_percentage"] = total_spendings/context["total_receivings_percentage"] if context["total_receivings_percentage"] > 0 else 0
     context["left_to_spent"] = total_receivings - total_spendings
