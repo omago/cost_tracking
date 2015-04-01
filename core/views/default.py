@@ -80,7 +80,7 @@ def index(request):
         sum_percentage = 0
 
         if cost_sum["amount__sum"]:
-            sum_percentage = cost_sum["amount__sum"]/total_receivings_percentage
+            sum_percentage = cost_sum["amount__sum"]/total_receivings_percentage if total_receivings_percentage > 0 else 0
 
         spendings_by_categories.append({"category": cost_category.name,
                                         "category_id": cost_category.pk,
