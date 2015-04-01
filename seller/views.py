@@ -16,7 +16,7 @@ model_form = ModelForm
 def autocomplete(request):
     if request.is_ajax():
         seller_name = request.GET.get("seller_name")
-        cost_names = Model.objects.filter(name__istartswith=seller_name)
+        cost_names = Model.objects.filter(name__istartswith=seller_name).exclude(deleted=True)
         data = serializers.serialize("json", cost_names)
 
         return HttpResponse(data, content_type='application/json')
