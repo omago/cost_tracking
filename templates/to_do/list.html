@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% load simple_tags %}
+{% load filters %}
+
+{% block content %}
+
+    {% h1 page_title %}
+
+    {% button_new "Novi to do" "/to-do/form/" %}
+
+
+    <table class="grid">
+        {% if rows %}
+            <tr>
+                {% th "Id" "pk" "3" %}
+                {% th "Zadatak" "task" "47" "left" %}
+                {% th "Označi kao završeno" None "10" "left" %}
+                {% th "Rok za izvršenje" "date_to" "10" "left" %}
+                {% th "Izvršitelj" "assignee" "10" "left" %}
+                {% th_operation %}
+            </tr>
+            {% for row in rows %}
+                <tr>
+                    {% td row.pk "pk" %}
+                    {% with link=row.pk|format:"<a href='/to-do/details/%s/'>"|add:row.task|add:"</a>" %}
+                        {% td link "task" "left" %}
+                    {% endwith %}
+                    {% with link=row.pk|format:"<a href='/to-do/finished/%s/'>Završi</a>" %}
+                        {% td link "task" "left" %}
+                    {% endwith %}                    {% td row.date_to "date_to" "left" %}
+                    {% td row.assignee "assignee" "left" %}
+                    {% with view=row.pk|format:"<a href='/to-do/details/%s/' class='view'></a>" %}
+                    {% with edit=row.pk|format:"<a href='/to-do/form/%s/' class='edit'></a>" %}
+                    {% with delete=row.pk|format:"<a href='/to-do/delete/%s/' class='delete'></a>" %}
+                        {% td view|add:edit|add:delete %}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                {% td "Nema zapisa" %}
+            </tr>
+        {% endif %}
+    </table>
+    {% pager rows %}
+
+{% endblock %}

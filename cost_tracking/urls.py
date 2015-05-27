@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^/*', include("receipt.urls")),
+    url(r'^/*', include("to_do.urls")),
     url(r'^/*', include("receiving_category.urls")),
     url(r'^/*', include("receiving.urls")),
     url(r'^/*', include("cost_category.urls")),

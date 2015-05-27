@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from cost.models import Cost
 from cost_category.models import CostCategory
 from receiving.models import Receiving
+from to_do.models import ToDo
 
 @login_required
 def index(request):
@@ -122,6 +123,11 @@ def index(request):
                                    "left_to_spent": left_to_spent,
                                    "left_to_spent_percentage": left_to_spent/spending_sum_percentage if left_to_spent and spending_sum_percentage > 0 else 0})
 
+    user_to_dos = ToDo.objects\
+        .filter(finished__isnull=True)\
+        .filter(assignee=request.user)\
+
+    context["user_to_dos"] = user_to_dos
     context["spendings_by_days"] = spendings_by_days
     context["spendings_by_categories"] = spendings_by_categories
     context["spendings_by_users"] = spendings_by_users

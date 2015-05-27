@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'seller',
     'cost',
     'receipt',
+    'to_do',
     'receiving',
 )
 
