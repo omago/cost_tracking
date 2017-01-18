@@ -40,11 +40,8 @@
             {% if rows %}
                 <tr>
                     {% th "Id" "pk" "3" %}
-                    {% th "Naziv troška" "cost_name.name" "17" "left" %}
                     {% th "Kategorija troška" "cost_category.name" "15" "left" %}
-                    {% th "Podkategorija troška" "cost_subcategory.name" "15" "left" %}
                     {% th "Iznos" "amount" "5" "left" %}
-                    {% th "Količina" "quantity" "5" "left" %}
                     {% th "Datum troška" "date_of_cost" "10" "left" %}
                     {% th "Platio" "paid_by" "10" "left" %}
                     {% th "Unio" "created_by" "10" "left" %}
@@ -53,13 +50,10 @@
                 {% for row in rows %}
                     <tr>
                         {% td row.pk "pk" %}
-                        {% with link=row.pk|format:"<a href='/cost/details/%s/'>"|add:row.cost_name.name|add:"</a>" %}
-                            {% td link "cost_name.name" "left" %}
+                        {% with link=row.pk|format:"<a href='/cost/details/%s/'>"|add:row.cost_category.name|add:"</a>" %}
+                            {% td link "cost_category.name" "left" %}
                         {% endwith %}
-                        {% td row.cost_category.name "cost_category.name" "left" %}
-                        {% td row.cost_subcategory.name "cost_subcategory.name" "left" %}
                         {% td row.amount "amount" "left" %}
-                        {% td row.quantity "quantity" "left" %}
                         {% td row.date_of_cost "date_of_cost" "left" %}
                         {% td row.paid_by "paid_by" "left" %}
                         {% td row.created_by "created_by" "left" %}

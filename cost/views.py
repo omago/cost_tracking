@@ -40,21 +40,20 @@ def report(request):
     order_by = request.GET.get("order_by", None)
     order_type = request.GET.get("order_type", None)
 
+    year = request.GET.get("year", None)
     month = request.GET.get("month", None)
-    day = request.GET.get("day", None)
     amount_from = request.GET.get("amount_from", None)
     amount_to = request.GET.get("amount_to", None)
     paid_by = request.GET.get("paid_by", None)
     cost_category_multiple = request.GET.getlist("cost_category_multiple", None)
-    cost_subcategory_multiple = request.GET.getlist("cost_subcategory_multiple", None)
 
     rows_list = Model.objects.all()
 
+    if year:
+        rows_list = rows_list.filter(date_of_cost__year=year)
+
     if month:
         rows_list = rows_list.filter(date_of_cost__month=month)
-
-    if day:
-        rows_list = rows_list.filter(date_of_cost__day=day)
 
     if amount_from:
         rows_list = rows_list.filter(amount__gte=amount_from)
@@ -67,9 +66,6 @@ def report(request):
 
     if cost_category_multiple:
         rows_list = rows_list.filter(cost_category__in=cost_category_multiple)
-
-    if cost_subcategory_multiple:
-        rows_list = rows_list.filter(cost_subcategory__in=cost_subcategory_multiple)
 
     rows_list = rows_list.filter(deleted=None)
 

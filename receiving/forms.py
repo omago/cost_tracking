@@ -3,6 +3,7 @@
 
 from django import forms
 from django.utils import timezone
+from django.forms import TextInput
 
 from .models import Receiving as Model
 
@@ -13,9 +14,14 @@ class ReceivingForm(forms.ModelForm):
         self.fields["date_of_receiving"].widget.attrs.update({'class': 'date'})
         self.fields['received_by'].label_from_instance = lambda obj: "%s %s (%s)" % (obj.first_name, obj.last_name, obj.username)
 
+        self.fields["description"].widget = TextInput()
+
+        self.initial["date_of_receiving"] = timezone.now()
+        #self.initial["received_by"] = user
+
     class Meta:
         model = Model
-        exclude = ("deleted", "deleted_by", "deleted_datetime", "created_by", "creation_datetime")
+        fields = ("receiving_category", "amount", "description", "received_by", "date_of_receiving")
 
     def save(self, commit=True, created_by=None):
         receiving = super(ReceivingForm, self).save(commit=False)

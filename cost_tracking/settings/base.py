@@ -126,11 +126,7 @@ INSTALLED_APPS = (
     'core',
     'receiving_category',
     'cost_category',
-    'cost_subcategory',
-    'cost_name',
-    'seller',
     'cost',
-    'receipt',
     'to_do',
     'receiving',
 )

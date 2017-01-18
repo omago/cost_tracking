@@ -8,31 +8,47 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Seller.deleted'
-        db.add_column('seller', 'deleted',
-                      self.gf('django.db.models.fields.NullBooleanField')(null=True, blank=True),
-                      keep_default=False)
+        # Deleting field 'Cost.cost_name'
+        db.delete_column('cost', 'cost_name_id')
 
-        # Adding field 'Seller.deleted_datetime'
-        db.add_column('seller', 'deleted_datetime',
-                      self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True),
-                      keep_default=False)
+        # Deleting field 'Cost.receipt'
+        db.delete_column('cost', 'receipt_id')
 
-        # Adding field 'Seller.deleted_by'
-        db.add_column('seller', 'deleted_by',
-                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='seller_deleted_by', null=True, to=orm['auth.User']),
-                      keep_default=False)
+        # Deleting field 'Cost.attachment'
+        db.delete_column('cost', 'attachment')
+
+        # Deleting field 'Cost.cost_subcategory'
+        db.delete_column('cost', 'cost_subcategory_id')
+
+        # Deleting field 'Cost.quantity'
+        db.delete_column('cost', 'quantity')
 
 
     def backwards(self, orm):
-        # Deleting field 'Seller.deleted'
-        db.delete_column('seller', 'deleted')
+        # Adding field 'Cost.cost_name'
+        db.add_column('cost', 'cost_name',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cost_name.CostName'], null=True, blank=True),
+                      keep_default=False)
 
-        # Deleting field 'Seller.deleted_datetime'
-        db.delete_column('seller', 'deleted_datetime')
+        # Adding field 'Cost.receipt'
+        db.add_column('cost', 'receipt',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['receipt.Receipt'], null=True, blank=True),
+                      keep_default=False)
 
-        # Deleting field 'Seller.deleted_by'
-        db.delete_column('seller', 'deleted_by_id')
+        # Adding field 'Cost.attachment'
+        db.add_column('cost', 'attachment',
+                      self.gf('django.db.models.fields.files.FileField')(default=None, max_length=100, blank=True),
+                      keep_default=False)
+
+        # Adding field 'Cost.cost_subcategory'
+        db.add_column('cost', 'cost_subcategory',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['cost_subcategory.CostSubcategory'], null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'Cost.quantity'
+        db.add_column('cost', 'quantity',
+                      self.gf('django.db.models.fields.DecimalField')(default=None, max_digits=11, decimal_places=2),
+                      keep_default=False)
 
 
     models = {
@@ -72,18 +88,26 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'seller.seller': {
-            'Meta': {'ordering': "['-pk']", 'object_name': 'Seller', 'db_table': "'seller'"},
-            'address': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
-            'contact_person': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
+        u'cost.cost': {
+            'Meta': {'ordering': "['-pk']", 'object_name': 'Cost', 'db_table': "'cost'"},
+            'amount': ('django.db.models.fields.DecimalField', [], {'max_digits': '11', 'decimal_places': '2'}),
+            'cost_category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['cost_category.CostCategory']"}),
+            'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'cost_created_by'", 'to': u"orm['auth.User']"}),
+            'creation_datetime': ('django.db.models.fields.DateTimeField', [], {}),
+            'date_of_cost': ('django.db.models.fields.DateField', [], {}),
             'deleted': ('django.db.models.fields.NullBooleanField', [], {'null': 'True', 'blank': 'True'}),
-            'deleted_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'seller_deleted_by'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'deleted_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'cost_deleted_by'", 'null': 'True', 'to': u"orm['auth.User']"}),
             'deleted_datetime': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'phone_number': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'})
+            'paid_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'cost_paid_by'", 'to': u"orm['auth.User']"})
+        },
+        u'cost_category.costcategory': {
+            'Meta': {'ordering': "['-pk']", 'object_name': 'CostCategory', 'db_table': "'cost_category'"},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'monthly_budget': ('django.db.models.fields.IntegerField', [], {'max_length': '11', 'null': 'True', 'blank': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '128'})
         }
     }
 
-    complete_apps = ['seller']
+    complete_apps = ['cost']

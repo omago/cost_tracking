@@ -24,16 +24,12 @@
                         <ul class="menu">
                             <li><a href="/to-do/list.html">To do</a></li>
                             <li><a href="/cost/list.html">Troškovi</a></li>
-                            <li><a href="/receipt/list.html">Računi</a></li>
                             <li><a href="/receiving/list.html">Primanja</a></li>
                             <li><a href="/cost/report.html">Izvještaj</a></li>
                             <li><a class="submenu-horizontal">Šifrarnici</a>
                                 <ul>
                                     <li><a href="/receiving-category/list.html">Kategorije primanja</a></li>
                                     <li><a href="/cost-category/list.html">Kategorije troškova</a></li>
-                                    <li><a href="/cost-subcategory/list.html">Podkategorije troškova</a></li>
-                                    <li><a href="/cost-name/list.html">Nazivi troškova</a></li>
-                                    <li><a href="/seller/list.html">Prodavatelji</a></li>
                                 </ul>
                             </li>
                             {% if request.user.is_superuser %}
@@ -65,7 +61,6 @@
                             <ul>
                                 <li><a href="/to-do/list.html">To do</a></li>
                                 <li><a href="/cost/list.html">Troškovi</a></li>
-                                <li><a href="/receipt/list.html">Računi</a></li>
                                 <li><a href="/receiving/list.html">Primanja</a></li>
                                 <li><a href="/cost/report.html">Izvještaj</a></li>
                                 {% if request.user.is_superuser %}
@@ -80,9 +75,6 @@
                             <ul>
                                 <li><a href="/receiving-category/list.html">Kategorije primanja</a></li>
                                 <li><a href="/cost-category/list.html">Kategorije troškova</a></li>
-                                <li><a href="/cost-subcategory/list.html">Podkategorije troškova</a></li>
-                                <li><a href="/cost-name/list.html">Nazivi troškova</a></li>
-                                <li><a href="/seller/list.html">Prodavatelji</a></li>
                             </ul>
                         </div>
                     </div>
