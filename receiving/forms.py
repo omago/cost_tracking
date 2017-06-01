@@ -10,6 +10,7 @@ from .models import Receiving as Model
 
 class ReceivingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('current_user', None)
         super(ReceivingForm, self).__init__(*args, **kwargs)
         self.fields["date_of_receiving"].widget.attrs.update({'class': 'date'})
         self.fields['received_by'].label_from_instance = lambda obj: "%s %s (%s)" % (obj.first_name, obj.last_name, obj.username)
@@ -17,7 +18,7 @@ class ReceivingForm(forms.ModelForm):
         self.fields["description"].widget = TextInput()
 
         self.initial["date_of_receiving"] = timezone.now()
-        #self.initial["received_by"] = user
+        self.initial["received_by"] = user
 
     class Meta:
         model = Model

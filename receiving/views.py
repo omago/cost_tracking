@@ -17,7 +17,7 @@ def list(request):
 
 @login_required
 def form(request, pk=None):
-    return get_form(request, model, model_form, pk, context, "common/form.html", True)
+    return get_form(request, model, model_form, pk, context, "common/form.html", True, False, True)
 
 
 @login_required

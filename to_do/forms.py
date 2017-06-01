@@ -9,9 +9,12 @@ from .models import ToDo as Model
 
 class ToDoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('current_user', None)
         super(ToDoForm, self).__init__(*args, **kwargs)
 
+        self.fields['assignee'].label_from_instance = lambda obj: "%s %s (%s)" % (obj.first_name, obj.last_name, obj.username)
         self.fields["date_to"].widget.attrs.update({'class': 'date'})
+        self.initial["assignee"] = user
 
     class Meta:
         model = Model

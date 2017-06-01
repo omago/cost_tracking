@@ -14,6 +14,7 @@ from django.forms import TextInput
 class CostForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('current_user', None)
         super(CostForm, self).__init__(*args, **kwargs)
 
         self.fields["date_of_cost"].widget.attrs.update({'class': 'date'})
@@ -23,7 +24,7 @@ class CostForm(ModelForm):
 
         self.initial["cost_category"] = CostCategory.objects.get(pk=1)
         self.initial["date_of_cost"] = timezone.now()
-        # self.initial["paid_by"] = user
+        self.initial["paid_by"] = user
 
     class Meta:
         model = Model

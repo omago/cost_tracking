@@ -69,7 +69,7 @@ def get_list(request, model_object, context, template, hide_deleted=False):
     return render_to_response(template, context, context_instance=RequestContext(request))
 
 
-def get_form(request, model_object, model_form, pk, context, template, created_by=False, file_upload=False):
+def get_form(request, model_object, model_form, pk, context, template, created_by=False, file_upload=False, current_user=False):
     if request.POST:
         if pk:
             entry = model_object.objects.get(pk=pk)
@@ -94,7 +94,10 @@ def get_form(request, model_object, model_form, pk, context, template, created_b
             entry = model_object.objects.get(pk=pk)
             form = model_form(instance=entry)
         else:
-            form = model_form()
+            if current_user:
+                form = model_form(current_user=request.user)
+            else:
+                form = model_form()
 
     context.update(csrf(request))
     context['form'] = form
